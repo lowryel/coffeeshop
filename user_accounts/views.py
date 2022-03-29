@@ -6,23 +6,38 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.models import User
 
 from coffee.models import OrderBooking
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, fileForm
 from django.urls import reverse_lazy
 from django.views import View
 from django.views. generic import ListView
+from .models import FileModel
+from django.contrib.sessions.backends import signed_cookies
 
 # Create your views here.
 
-class RegisterView(View):
+def upload_file(request):
+    if request.method=="POST":
+        forms=fileForm(request.POST, request.FILES)
+        if forms.is_valid():
+            instance=FileModel(file=request.FILES['file'], name=request.POST['name'])
+            instance.save()
+            return redirect('coffee/menu')
+    else:
+
+        forms=fileForm()
+    return render(request, 'accounts/register.html', {"forms":forms})
+
+
+class ListOrderView(ListView):
+    
     def get(self, request, *args, **kwargs):
-
-        return render(request, 'accounts/register.html')
-
-class ListOrderView(View):
-
-    def get(self, request, *args, **kwargs):
-        order_listing=OrderBooking.objects.all().order_by('date', 'time')
-        context={"order_listing":order_listing}
+        if not request.user.is_authenticated:
+            
+            return redirect('accounts/register')
+        else:
+            order_listing=OrderBooking.objects.filter(user=request.user).order_by('date', 'time')
+            context={"order_listing":order_listing}
+            
         return render(request, 'accounts/list_order.html', context)
 
 
@@ -39,6 +54,5 @@ class UserRegister(SuccessMessageMixin, CreateView):
             return self.render_to_response(self.get_context_data(form=form))
         login(self.request, user)
         return redirect(self.get_success_url())
-
 
 

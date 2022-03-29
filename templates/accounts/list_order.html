@@ -11,11 +11,13 @@
     <div>
         <h3 title="">Here are your orders</h3>
         {% for order in order_listing %}
-        <h2>{{order.menu_name}}</h2>
-        <p>{{order.email}}</p>
-        <p>{{order.date}}</p>
-        <p>{{order.time}}</p>
-        <p>{{order.persons}}</p>
+            {% filter upper %}
+            <h2>{{order.menu_name}}</h2>
+            <p>{{order.email}}</p>
+            <p>{{order.date|timesince}}</p>
+            <p>{{order.time}}</p>
+            <p>You have {{order.persons}} order{{order.persons|pluralize}}</p>
+            {% endfilter %}
         {% endfor  %}
 
     </div>

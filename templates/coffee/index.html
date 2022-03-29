@@ -25,6 +25,10 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.6.1" 
+        integrity="sha384-tvG/2mnCFmGQzYC1Oh3qxQ7CkQ9kMzYjWZSNtrRZygHPDDqottzEJsqS4oUVodhW" 
+        crossorigin="anonymous">
+    </script>
 </head>
 
 <body>
@@ -472,6 +476,12 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
+    
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+          event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        })
+    </script>
 </body>
 
 </html>

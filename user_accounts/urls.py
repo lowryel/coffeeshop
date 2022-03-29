@@ -4,8 +4,8 @@ from user_accounts.views import *
 
 
 urlpatterns = [
-    path('register', RegisterView.as_view()),
-    path('list_order', ListOrderView.as_view()),
+    path('register', upload_file, name='accounts/register'),
+    path('list_order', ListOrderView.as_view(), name='accounts/list_order'),
 ]
 
 

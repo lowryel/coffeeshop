@@ -22,5 +22,17 @@
             </thead>
         </table>
     </form>
+
+    <div>
+        <form action="{% url 'accounts/register' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                <thead>
+                    <td><tr>{{forms.as_table}}</tr></td>
+                    <td><tr><input type="submit" value="Upload"></tr></td>
+                </thead>
+            </table>   
+        </form>
+    </div>
 </body>
 </html>

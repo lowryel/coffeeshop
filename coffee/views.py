@@ -3,9 +3,10 @@ from coffee.models import *
 from user_accounts.views import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import TestimonialForm
+from .forms import OrderReservationForm, TestimonialForm
 from django.utils.translation import pgettext
 from django.core.paginator import Paginator
+from django.db.models import Sum
 
 user=settings.AUTH_USER_MODEL
 
@@ -50,49 +51,51 @@ def index(request):
 
 
 def reservation(request):
-    if request.user.is_authenticated:
+    form=OrderReservationForm(request.POST or None)
+    if form.is_valid():
 
-        if request.method=="POST":
-            menu_name=request.POST['menu_name']
-            email=request.POST['email']
-            date=request.POST['date']
-            time=request.POST['time']
-            persons=request.POST['persons']
-
-            order_booking=OrderBooking.objects.create(menu_name=menu_name, email=email, date=date, time=time, persons=persons)
-            order_booking.save()
+        if request.user.is_authenticated:
+            instance=form.save(commit=False)
+            instance.user=request.user
+            instance.save()
             messages.success(request, "Order booking is successful")
-            return redirect('coffee/contact')
+            return redirect('coffee/menu')
         else:
-            return render(request, 'coffee/reservation.html')
-    messages.info(request, "You need to login")
-    return redirect("coffee/menu")
+            return redirect("coffee/menu")
+    
+    return render(request, 'coffee/reservation.html', {"form":form})
 
 
 def service(request):
 
     return render(request, 'coffee/service.html')
 
-    
-@login_required
-def testimonial(request):
-    testimony=Testimonial.objects.all()
-    if request.method=="POST":
-        client=request.POST['client']
-        profession=request.POST['profession']
-        comment=request.POST['comment']
-        image=request.POST['image']
-        testament=Testimonial.objects.create(client=client, profession=profession,
-        comment=comment, image=image)
-        testament.save()
-        return redirect('coffee/testimonial')
+class TestimonialListView(ListView):
+    form=TestimonialForm
+    template_name='coffee/testimonial.html'
+    success_url= 'coffee/menu'
+    def testimonial(self, request, form):
+        testimony=Testimonial.objects.all()
+        order_total=OrderBooking.objects.filter(user=request.user).aggregate(orderbooking_persons=Sum('persons'))
+        total_order=order_total['orderbooking_persons']
+        if form.is_valid():
 
-    context={
-        'testimony': testimony,
-    }
-    return render(request, 'coffee/testimonial.html', context)
+            if request.user.authenticated:
+                instance=form.save(commit=False)
+                instance.user=self.request.user
+                instance.save()
+                messages.success(request, "Comment submitted")
+                return redirect('coffee/menu')
+            else:
+                return redirect("accounts/register")
+        context={
+            'testimony': testimony,
+            'form':form,
+            "total_order":total_order
+        }
+        return render(request, , context)
 
-
+# Display for the menu page
 def menu(request):
 
     return render(request, 'coffee/menu.html')
