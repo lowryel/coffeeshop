@@ -10,7 +10,8 @@ urlpatterns = [
     path('reservation', reservation, name='coffee/reservation'),
     path('service', service, name='coffee/service'),
     path('menu', menu, name='coffee/menu'),
-    path('testimonial', testimonial, name='coffee/testimonial')
+    # path('testimonial', testimonial, name='coffee/testimonial'),
+    path('testimonial', TestimonialCreateView.as_view(), name='coffee/testimonial')
 ]
 
 

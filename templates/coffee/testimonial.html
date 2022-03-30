@@ -53,7 +53,7 @@
                 <h1 class="display-4">Our Clients Say</h1>
             </div>
             <div class="owl-carousel testimonial-carousel">
-                {% for test in testimony %}
+                {% for test in queryset %}
                 <div class="testimonial-item">
                     <div class="d-flex align-items-center mb-3">
                         <!-- <img class="img-fluid" src={{test.imgUrl}} alt=""> -->
@@ -72,19 +72,12 @@
     <div id="form_action">
         <form action="{% url 'coffee/testimonial' %}" method="POST">
             {% csrf_token %}
-            <strong>{{form.as_p}}</strong>
+            <strong>{{form.as_p}} </strong>
             <input type="submit" value="submit">
         </form>
     </div>
-    <h3>You have {{total_order}} total orders so far today for {{user}}</h3>
     <!-- Testimonial End -->
-    
-    
-    <div hx-post="{% url 'coffee/testimonial' %}"
-       hx-trigger="click"
-       hx-target="#form_action"
-       hx-swap="outerHTML">
-    </div>
+
     {% endblock content %}
 </body>
 <!-- action="{% url 'coffee/testimonial' %}" method="POST"  -->

@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from coffee.models import *
 from user_accounts.views import *
@@ -7,6 +8,7 @@ from .forms import OrderReservationForm, TestimonialForm
 from django.utils.translation import pgettext
 from django.core.paginator import Paginator
 from django.db.models import Sum
+from django.views.generic import CreateView, ListView
 
 user=settings.AUTH_USER_MODEL
 
@@ -70,30 +72,42 @@ def service(request):
 
     return render(request, 'coffee/service.html')
 
-class TestimonialListView(ListView):
+class TestimonialCreateView(CreateView):
+    queryset=Testimonial.objects.all()
     form=TestimonialForm
     template_name='coffee/testimonial.html'
-    success_url= 'coffee/menu'
-    def testimonial(self, request, form):
-        testimony=Testimonial.objects.all()
-        order_total=OrderBooking.objects.filter(user=request.user).aggregate(orderbooking_persons=Sum('persons'))
-        total_order=order_total['orderbooking_persons']
-        if form.is_valid():
+    success_url= 'menu'
+    fields=['client', 'profession', 'comment']
 
-            if request.user.authenticated:
-                instance=form.save(commit=False)
-                instance.user=self.request.user
-                instance.save()
-                messages.success(request, "Comment submitted")
-                return redirect('coffee/menu')
-            else:
-                return redirect("accounts/register")
-        context={
-            'testimony': testimony,
-            'form':form,
-            "total_order":total_order
-        }
-        return render(request, , context)
+    def form_valid(self, form):
+        instance=form.save(commit=False)
+        instance.user=self.request.user
+        
+        return super(TestimonialCreateView, self).form_valid(form)
+        # return render(request, TestimonialCreateView).form_valid(form)
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        context['queryset']=self.queryset
+        return context
+
+def testimonial(request):
+    testimony=Testimonial.objects.all()
+    form=TestimonialForm(request.POST or None)
+    errors=None
+    if form.is_valid():
+        if request.user.is_authenticated:
+            instance=form.save(commit=False)
+            instance.user=request.user
+            instance.save()
+            return HttpResponseRedirect('menu')
+        return HttpResponseRedirect('login')
+        
+    if form.errors:
+        errors=form.errors
+
+    context={'form':form, 'testimony':testimony}
+    return render(request, 'coffee/testimonial.html', context)
+
 
 # Display for the menu page
 def menu(request):
