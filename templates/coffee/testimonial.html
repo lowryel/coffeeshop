@@ -72,7 +72,7 @@
     <div id="form_action">
         <form action="{% url 'coffee/testimonial' %}" method="POST">
             {% csrf_token %}
-            <strong>{{form.as_p}} </strong>
+            <p>{{form.as_p}} </p>
             <input type="submit" value="submit">
         </form>
     </div>
@@ -80,5 +80,5 @@
 
     {% endblock content %}
 </body>
-<!-- action="{% url 'coffee/testimonial' %}" method="POST"  -->
+
 </html>

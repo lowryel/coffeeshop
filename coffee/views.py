@@ -8,7 +8,9 @@ from .forms import OrderReservationForm, TestimonialForm
 from django.utils.translation import pgettext
 from django.core.paginator import Paginator
 from django.db.models import Sum
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, View
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 user=settings.AUTH_USER_MODEL
 
@@ -27,9 +29,8 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
-def about(request):
+#Display for About page
 
-    return render(request, 'coffee/about.html')
 
 
 def contact(request):
@@ -51,6 +52,15 @@ def index(request):
 
     return render(request, 'coffee/index.html')
 
+def service(request):
+
+    return render(request, 'coffee/service.html')
+
+def about(request):
+
+    return render(request, 'coffee/about.html')
+
+
 
 def reservation(request):
     form=OrderReservationForm(request.POST or None)
@@ -68,45 +78,25 @@ def reservation(request):
     return render(request, 'coffee/reservation.html', {"form":form})
 
 
-def service(request):
 
-    return render(request, 'coffee/service.html')
 
-class TestimonialCreateView(CreateView):
+class TestimonialCreateView(LoginRequiredMixin, CreateView):
     queryset=Testimonial.objects.all()
+    login_url="/login/"
     form=TestimonialForm
     template_name='coffee/testimonial.html'
-    success_url= 'menu'
+    # success_url= 'menu'
     fields=['client', 'profession', 'comment']
 
     def form_valid(self, form):
         instance=form.save(commit=False)
         instance.user=self.request.user
-        
         return super(TestimonialCreateView, self).form_valid(form)
-        # return render(request, TestimonialCreateView).form_valid(form)
+
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
         context['queryset']=self.queryset
         return context
-
-def testimonial(request):
-    testimony=Testimonial.objects.all()
-    form=TestimonialForm(request.POST or None)
-    errors=None
-    if form.is_valid():
-        if request.user.is_authenticated:
-            instance=form.save(commit=False)
-            instance.user=request.user
-            instance.save()
-            return HttpResponseRedirect('menu')
-        return HttpResponseRedirect('login')
-        
-    if form.errors:
-        errors=form.errors
-
-    context={'form':form, 'testimony':testimony}
-    return render(request, 'coffee/testimonial.html', context)
 
 
 # Display for the menu page

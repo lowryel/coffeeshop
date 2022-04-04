@@ -13,11 +13,11 @@
         {% for order in order_listing %}
             {% filter upper %}
             <h2>{{order.menu_name}}</h2>
+            {% endfilter %}
             <p>{{order.email}}</p>
             <p>{{order.date|timesince}}</p>
             <p>{{order.time}}</p>
             <p>You have {{order.persons}} order{{order.persons|pluralize}}</p>
-            {% endfilter %}
         {% endfor  %}
 
     </div>
