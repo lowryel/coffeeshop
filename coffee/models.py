@@ -19,16 +19,23 @@ class OrderBooking(models.Model):
     time=models.TimeField(auto_now_add=True)
     persons=models.CharField(max_length=120, blank=False)
 
+
     def __str__(self):
         return self.menu_name.name
 
+def email_validator(email):
+        if 'com' in email.split('.'):
+            return 'Valid email'
+        else:
+            return 'Invalid email. Make sure your email is a .com'
 
 class ContactUs(models.Model):
     name=models.CharField(max_length=150, blank=False)
-    email=models.EmailField()
+    email=models.EmailField(validators=[email_validator])
     subject=models.CharField(max_length=120, blank=False)
     message=models.TextField(blank=True, editable=True)
 
+    
     def __str__(self):
         return self.name
 

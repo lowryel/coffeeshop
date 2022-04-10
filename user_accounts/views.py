@@ -36,7 +36,7 @@ class ListOrderView(ListView):
             
             return redirect('accounts/register')
         else:
-            order_listing=OrderBooking.objects.filter(user=request.user).order_by('date', 'time')
+            order_listing=OrderBooking.objects.filter(user=request.user).order_by('-date', '-time')
             context={"order_listing":order_listing}
             
         return render(request, 'accounts/list_order.html', context)

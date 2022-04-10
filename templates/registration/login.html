@@ -1,4 +1,4 @@
-
+{% load crispy_forms_tags %}
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
@@ -14,11 +14,12 @@ please login with an account that has access.</p>
     {% csrf_token %}
         <table>
             <tr>
+                
                 <td>{{ form.username.label_tag }}😊</td>
                 <td>{{ form.username }}</td>
                     </tr>
                     <tr>
-                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password.label_tag }}😊</td>
                 <td>{{ form.password }}</td>
             </tr>
         </table>
