@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+{% extends 'coffee/index.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
-<html lang="en">
+{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,9 +9,18 @@
     <title>Your Order</title>
 </head>
 <body>
-    <div>
-        <h3 title="">Here are your orders</h3>
+    
+    <style>
+
+    </style>
+    <h3 title="">Here are your orders</h3>
+    <div id="delete_order" 
+    hx-confirm="Are you sure you wish to delete an order?"
+    hx-target="#delete_order"
+    hx-swap="outerHTML">
+    
         {% for order in order_listing %}
+        <div>
             {% filter upper %}
             <h2>{{order.menu_name}}</h2>
             {% endfilter %}
@@ -18,8 +28,14 @@
             <p>{{order.date|timesince}}</p>
             <p>{{order.time}}</p>
             <p>You have {{order.persons}} order{{order.persons|pluralize}}</p>
+
+        </div>
+        <button hx-delete="{% url 'list_order' order.pk %}">
+            Delete an Order
+        </button>
         {% endfor  %}
 
     </div>
+    {% endblock %}
 </body>
 </html>

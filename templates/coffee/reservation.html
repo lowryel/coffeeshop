@@ -69,7 +69,7 @@
                     <div class="col-lg-6">
                         <div class="text-center p-5" style="background: rgba(51, 33, 29, .8);">
                             <h1 class="text-white mb-4 mt-5">Book Your Table</h1>
-                            <form class="mb-5" method="post" action="{% url 'coffee/reservation' %}">
+                            <form id="reservation_an_order" class="mb-5" method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <table>
@@ -81,7 +81,10 @@
                                 </div>
                                 
                                 <div>
-                                    <button class="btn btn-primary btn-block font-weight-bold py-3" type="submit">Book Now</button>
+                                    <button hx-post="{% url 'reservation' %}" 
+                                    hx-trigger="click"
+                                    hx-target="#reservation_an_order"
+                                    hx-swap="outerHTML" class="btn btn-primary btn-block font-weight-bold py-3" type="submit">Book Now</button>
                                 </div>
                             </form>
                         </div>

@@ -43,7 +43,7 @@ def contact(request):
         contact_us=ContactUs.objects.create(name=name, email=email, subject=subject, message=message)
         contact_us.save()
         messages.success(request, "Customer message received successfully")
-        return redirect('coffee/contact')
+        return redirect('contact')
     else:   
         return render(request, 'coffee/contact.html')
 
@@ -71,9 +71,9 @@ def reservation(request):
             instance.user=request.user
             instance.save()
             messages.success(request, "Order booking is successful")
-            return redirect('coffee/menu')
+            return redirect('menu')
         else:
-            return redirect("coffee/menu")
+            return redirect("menu")
     
     return render(request, 'coffee/reservation.html', {"form":form})
 
@@ -103,3 +103,13 @@ class TestimonialCreateView(LoginRequiredMixin, CreateView):
 def menu(request):
 
     return render(request, 'coffee/menu.html')
+
+# def delete_order(request, id):
+#     OrderBooking.objects.filter(id=id).delete()
+#     orders=OrderBooking.objects.in_bulk()
+
+#     context={'orders':orders}
+#     return render(request, 'delete.html', context)
+
+    
+

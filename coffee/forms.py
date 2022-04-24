@@ -1,8 +1,6 @@
-from pyexpat import model
 from coffee.models import Testimonial
-# from django.forms import ModelForm
 from django import forms
-from coffee.models import OrderBooking
+from .models import OrderBooking
 
 
 class TestimonialForm(forms.ModelForm):
@@ -12,13 +10,14 @@ class TestimonialForm(forms.ModelForm):
         widgets = {
             'comment': forms.Textarea(attrs={'cols': 20, 'rows': 3}),
         }
-
+# @receiver(post_save, sender=TestimonialForm)
+# def testimonial_post_save(sender, created, **kwargs):
+#     print(sender, created, **kwargs)
 
 class OrderReservationForm(forms.ModelForm):
     class Meta:
         model=OrderBooking
         fields=['menu_name', 'email', 'persons']
-
 
 
 

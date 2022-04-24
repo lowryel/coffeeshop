@@ -11,6 +11,8 @@ class UserRegisterForm(UserCreationForm):
         model=User
         fields=("username", "email", "password1", "password2")
 
+
+# File verification and upload form
 class fileForm(forms.Form):
     name=forms.CharField(max_length=60)
     file=forms.FileField()

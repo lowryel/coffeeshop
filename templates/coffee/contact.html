@@ -79,7 +79,7 @@
                 <div class="col-md-6 pb-5">
                     <div class="contact-form">
                         <div id="success"></div>
-                        <form name="sentMessage" id="contactForm" novalidate="novalidate" method="post" action="{% url 'coffee/contact' %}">
+                        <form name="sentMessage" id="contactForm" novalidate="novalidate" method="post" action="{% url 'contact' %}">
                             {% csrf_token %}
                             <div class="control-group">
                                 <input type="text" class="form-control bg-transparent p-4" id="name" placeholder="Your Name"
@@ -103,7 +103,10 @@
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div>
-                                <button class="btn btn-primary font-weight-bold py-3 px-5" type="submit" id="sendMessageButton">Send
+                                <button hx-post="{% url 'contact' %}" 
+                                hx-trigger="click"
+                                hx-target="#contactForm"
+                                hx-swap="outerHTML" class="btn btn-primary font-weight-bold py-3 px-5" type="submit" id="sendMessageButton">Send
                                     Message</button>
                                     <p>{{user}}</p>
                                     <p>{{user.is_authenticated}}</p>

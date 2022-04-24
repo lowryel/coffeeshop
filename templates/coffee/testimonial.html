@@ -71,7 +71,7 @@
         </div>
     </div>
     <div id="form_action">
-        <form action="{% url 'coffee/testimonial' %}" method="POST">
+        <form action="{% url 'testimonial' %}" method="POST">
             {% csrf_token %}
             
             <p>{{form|crispy}} </p>
