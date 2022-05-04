@@ -1,0 +1,23 @@
+{% extends 'coffee/index.html' %}
+{% load static %}
+{% block content %}
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla praesentium pariatur dignissimos, asperiores quas voluptatum id ab optio fugit perferendis aut quibusdam iure distinctio ratione rerum. Aspernatur praesentium vitae totam consequatur esse ratione error suscipit tempore, sequi non ipsam iusto cum nostrum dolores corporis maiores doloremque. Ex fugit expedita deserunt!
+</p>
+
+<div>
+    {{order.menu_name}}
+</div>
+
+<div>
+    <p>Are you sure you want to delete?</p>
+    <form method="post">
+        {% csrf_token %}
+
+        <input type="submit" value="Confirm">
+    </form>
+</div>
+
+{% endblock %}
+
+
+

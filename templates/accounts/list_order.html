@@ -1,5 +1,4 @@
 {% extends 'coffee/index.html' %}
-{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
 <head>
@@ -14,10 +13,7 @@
 
     </style>
     <h3 title="">Here are your orders</h3>
-    <div id="delete_order" 
-    hx-confirm="Are you sure you wish to delete an order?"
-    hx-target="#delete_order"
-    hx-swap="outerHTML">
+    <div id="delete_order">
     
         {% for order in order_listing %}
         <div>
@@ -30,12 +26,11 @@
             <p>You have {{order.persons}} order{{order.persons|pluralize}}</p>
 
         </div>
-        <button hx-delete="{% url 'list_order' order.pk %}">
-            Delete an Order
-        </button>
+        
+        <button><a href="{% url 'delete' order.pk %}">Delete an Order</a></button> 
+        <button><a href="{% url 'update' order.pk %}">Edit</a></button>
         {% endfor  %}
 
     </div>
     {% endblock %}
 </body>
-</html>

@@ -1,9 +1,11 @@
 
+from pyexpat import model
+from attr import fields
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.models import User
 
 from coffee.models import OrderBooking
@@ -31,12 +33,11 @@ def upload_file(request):
 
 class ListOrderView(ListView):
     
-    def get(self, request, pk, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             
             return redirect('register')
         else:
-            OrderBooking.objects.filter(id=pk).delete()
             order_listing=OrderBooking.objects.filter(user=request.user).order_by('-date', '-time')
             context={"order_listing":order_listing}
             
@@ -62,4 +63,25 @@ class UserRegister(SuccessMessageMixin, CreateView):
 def profile(request):
 
     return render(request, 'accounts/profile.html')
+
+class FileUpdateView(UpdateView):
+    model=OrderBooking
+    fields=['menu_name', 'persons']
+    template_name='accounts/profile.html'
+    success_url=reverse_lazy('menu')
+
+
+
+def delete(request, pk):
+    order=OrderBooking.objects.get(id=pk)
+    if request.method=='POST':
+
+        order.delete()
+        return redirect('list_order')
+    context={'order':order}
+    return render(request, 'accounts/delete.html', context)
+
+
+
+
 
