@@ -41,7 +41,6 @@ npm==0.1.1
 optional-django==0.1.0
 orjson==3.6.7
 packaging==21.3
-pandas==1.4.1
 parso==0.8.3
 pickleshare==0.7.5
 Pillow==9.0.1
