@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'coffee',
     'user_accounts',
     'whitenoise.runserver_nostatic',
+    'gunicorn'
 ]
 
 MIDDLEWARE = [
