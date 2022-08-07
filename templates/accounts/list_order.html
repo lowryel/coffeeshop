@@ -1,13 +1,14 @@
 {% extends 'coffee/index.html' %}
 {% load static %}
-{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Order</title>
 </head>
+
 <body>
+    {% block content %}
     
     <style>
 
@@ -26,11 +27,19 @@
             <p>You have {{order.persons}} order{{order.persons|pluralize}}</p>
 
         </div>
+<<<<<<< Updated upstream
         
         <button><a href="{% url 'delete' order.pk %}">Delete an Order</a></button> 
         <button><a href="{% url 'update' order.pk %}">Edit</a></button>
+=======
+        <a href="{% url 'delete' order.pk %}">
+            Delete an Order
+        </a>
+>>>>>>> Stashed changes
         {% endfor  %}
 
     </div>
+
+
     {% endblock %}
 </body>

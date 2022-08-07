@@ -7,3 +7,7 @@ class FileModel(models.Model):
 
     def __str__(self):
         return self.name
+
+class Comment(models.Model):
+    vote=models.IntegerField(default=0)
+    

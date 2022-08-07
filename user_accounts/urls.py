@@ -10,6 +10,10 @@ urlpatterns = [
     path('update/<int:pk>', FileUpdateView.as_view(template_name='accounts/profile.html'), name='update'),
     path('accounts/profile/', profile, name='profile'),
     path('delete/<int:pk>', delete, name='delete'),
+<<<<<<< Updated upstream
+=======
+    path('comment/<int:comment_id>', comment, name='comment'),
+>>>>>>> Stashed changes
 ]
 
 

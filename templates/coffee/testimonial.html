@@ -3,6 +3,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 <body>
     {% block content %}
 
@@ -48,7 +52,11 @@
         <form action="{% url 'testimonial' %}" method="POST">
             {% csrf_token %}
             
+<<<<<<< Updated upstream
             <p>{{form.as_table}} </p>
+=======
+            <p>{{form.as_p}} </p>
+>>>>>>> Stashed changes
             <input type="submit" value="submit">
         </form>
     </div>
